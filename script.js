@@ -16,38 +16,29 @@ function success(input) {
     input.className = 'form-control is-valid';
 }
 
-function validateEmail(email) {
+function checkEmail(input) {
     const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(String(email).toLowerCase());
+    
+    if(re.test(input.value)){
+        success(input);
+    }else {
+        error(input,'*email is required.')
+    }
+}
+
+function checkRequired(inputs){
+    inputs.forEach(function(input){
+        if (input.value === ''){
+            error(input,`*${input.id} is required.`);
+        }else {
+            success(input);
+        }
+    });
 }
 
 form.addEventListener('submit', function(e) {
     e.preventDefault();
 
-    if(username.value === '') {
-        error(username, 'username gerekli');
-    }else {
-        success(username);
-    }
- 
-    if(email.value === '') {
-        error(email, 'email gerekli');
-    }else if(!validateEmail(email.value)) {
-        error(email, 'düzgün bir mail adresi giriniz');
-    }    
-    else {
-        success(email);
-    }
-
-    if(password.value === '') {
-        error(password, 'password gerekli');
-    }else {
-        success(password);
-    }
-
-    if(repassword.value === '') {
-        error(repassword,'repassword gerekli' );
-    }else {
-        success(repassword);
-    }
+    checkRequired([username,password,repassword]);
+    checkEmail(email);
 });
