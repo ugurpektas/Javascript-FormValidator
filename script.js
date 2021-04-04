@@ -3,6 +3,7 @@ const username = document.getElementById('username');
 const email = document.getElementById('email');
 const password = document.getElementById('password');
 const repassword = document.getElementById('repassword');
+const phone = document.getElementById('phone');
 
 //nextElementSibling aynı hizadaki bir sonraki elementi seçmek için kullanılır.
 function error(input, message) {
@@ -36,9 +37,40 @@ function checkRequired(inputs){
     });
 }
 
+    // şifre alanı karakter uzunluğu ayarı
+function checkLength(input,min,max){
+    if (input.value.length<min){
+        error(input, `*${input.id} en az ${min} karakter olmalıdır.`)
+    }else if(input.value.length>max){
+        error(input, `*${input.id} en fazla ${max} karakter olmalıdır.`)
+    }else {
+        success(input);
+    }
+}
+
+    // şifrenin doğruluk kontrolü
+function checkPasswords(input1,input2){
+    if (input1.value !== input2.value){
+        error(input2,`paralolar eşleşmiyor`);
+    }
+}
+
+    //telefon numarası kontrolü
+function checkPhone(input){
+    var exp = /^\d{10}$/;
+    if (!exp.test(input.value)){
+        error(input , 'Telefon 10 karakterli olmalıdır.')
+    }
+}
+
 form.addEventListener('submit', function(e) {
     e.preventDefault();
 
-    checkRequired([username,password,repassword]);
+    checkRequired([username,email,password,repassword,phone]);
     checkEmail(email);
+    checkLength(username,7,14);
+    checkLength(password,7,12);
+    checkPasswords(password,repassword);
+    checkPhone(phone);
+
 });
